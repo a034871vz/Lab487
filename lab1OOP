@@ -1,0 +1,12 @@
+class Calculator:
+    result = 0
+    def ev(self):
+        while 1:
+            self.op = str(input())
+            if self.op.startswith("*") or self.op.startswith("/"):
+                self.result = eval(str(self.result) + self.op)
+            else:
+                self.result += eval(self.op)
+            return print(self.result)
+c = Calculator()
+c.ev()
