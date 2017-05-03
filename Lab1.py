@@ -45,11 +45,11 @@ while 1:
         continue
 
 
-result = 0
-while 1:
-    op = str(input())
-    if op.startswith("*") or op.startswith("/"):
-        result = eval(str(result)+op)
-    else:
-        result += eval(op)
-    print(result)
+#result = 0#
+#while 1:
+#    op = str(input())
+#    if op.startswith("*") or op.startswith("/"):
+#        result = eval(str(result)+op)
+#    else:
+#        result += eval(op)
+#    print(result)
