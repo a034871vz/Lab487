@@ -23,6 +23,7 @@ if file != None:
         print("Error on reading file content!")
     spamAverage = totalSpam / spamCounter
     print("Average spam confidence: " + str(spamAverage))
+    print(spamCounter)
     try:
         file.close()  # Close file
     except:
