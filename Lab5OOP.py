@@ -20,7 +20,7 @@ for i in range(len(mail.k)):
     mail.all_mail += 1
     mail.spam = mail.all_Conf/mail.all_mail
     print("по адресу:", mail.adr, "значение X-DSPAM-Confidence равно:", mail.Conf)
-    if float(mail.Conf) >= mail.spam:
+    if float(mail.Conf) >= 0.96:
         mail.a.add(mail.adr)
     else:
         continue

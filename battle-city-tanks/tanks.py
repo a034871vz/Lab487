@@ -1,10 +1,5 @@
-#!/usr/bin/python
-# coding=utf-8
-
-import os, pygame, time1, random, uuid, sys
-
+import os, pygame, random, uuid, sys
 class myRect(pygame.Rect):
-	""" Add type property """
 	def __init__(self, left, top, width, height, type):
 		pygame.Rect.__init__(self, left, top, width, height)
 		self.type = type
@@ -23,15 +18,12 @@ class Timer(object):
 			"uuid"			: uuid.uuid4()
 		}
 		self.timers.append(options)
-
 		return options["uuid"]
-
 	def destroy(self, uuid_nr):
 		for timer in self.timers:
 			if timer["uuid"] == uuid_nr:
 				self.timers.remove(timer)
 				return
-
 	def update(self, time_passed):
 		for timer in self.timers:
 			timer["time"] += time_passed
@@ -47,66 +39,36 @@ class Timer(object):
 						self.timers.remove(timer)
 					except:
 						pass
-
 class Castle():
-	""" Player's castle/fortress """
-
 	(STATE_STANDING, STATE_DESTROYED, STATE_EXPLODING) = range(3)
-
 	def __init__(self):
-
 		global sprites
-
 		# images
 		self.img_undamaged = sprites.subsurface(0, 15*2, 16*2, 16*2)
 		self.img_destroyed = sprites.subsurface(16*2, 15*2, 16*2, 16*2)
-
-		# init position
 		self.rect = pygame.Rect(12*16, 24*16, 32, 32)
-
-		# start w/ undamaged and shiny castle
 		self.rebuild()
-
 	def draw(self):
-		""" Draw castle """
 		global screen
-
 		screen.blit(self.image, self.rect.topleft)
-
 		if self.state == self.STATE_EXPLODING:
 			if not self.explosion.active:
 				self.state = self.STATE_DESTROYED
 				del self.explosion
 			else:
 				self.explosion.draw()
-
 	def rebuild(self):
-		""" Reset castle """
 		self.state = self.STATE_STANDING
 		self.image = self.img_undamaged
 		self.active = True
-
 	def destroy(self):
-		""" Destroy castle """
 		self.state = self.STATE_EXPLODING
 		self.explosion = Explosion(self.rect.topleft)
 		self.image = self.img_destroyed
 		self.active = False
 
 class Bonus():
-	""" Various power-ups
-	When bonus is spawned, it begins flashing and after some time dissapears
 
-	Available bonusses:
-		grenade	: Picking up the grenade power up instantly wipes out ever enemy presently on the screen, including Armor Tanks regardless of how many times you've hit them. You do not, however, get credit for destroying them during the end-stage bonus points.
-		helmet	: The helmet power up grants you a temporary force field that makes you invulnerable to enemy shots, just like the one you begin every stage with.
-		shovel	: The shovel power up turns the walls around your fortress from brick to stone. This makes it impossible for the enemy to penetrate the wall and destroy your fortress, ending the game prematurely. The effect, however, is only temporary, and will wear off eventually.
-		star		: The star power up grants your tank with new offensive power each time you pick one up, up to three times. The first star allows you to fire your bullets as fast as the power tanks can. The second star allows you to fire up to two bullets on the screen at one time. And the third star allows your bullets to destroy the otherwise unbreakable steel walls. You carry this power with you to each new stage until you lose a life.
-		tank		: The tank power up grants you one extra life. The only other way to get an extra life is to score 20000 points.
-		timer		: The timer power up temporarily freezes time, allowing you to harmlessly approach every tank and destroy them until the time freeze wears off.
-	"""
-
-	# bonus types
 	(BONUS_GRENADE, BONUS_HELMET, BONUS_SHOVEL, BONUS_STAR, BONUS_TANK, BONUS_TIMER) = range(6)
 
 	def __init__(self, level):
@@ -152,27 +114,16 @@ class Bullet():
 
 	# bullet's stated
 	(STATE_REMOVED, STATE_ACTIVE, STATE_EXPLODING) = range(3)
-
 	(OWNER_PLAYER, OWNER_ENEMY) = range(2)
-
 	def __init__(self, level, position, direction, damage = 100, speed = 5):
-
 		global sprites
-
 		self.level = level
 		self.direction = direction
 		self.damage = damage
 		self.owner = None
 		self.owner_class = None
-
-		# 1-regular everyday normal bullet
-		# 2-can destroy steel
 		self.power = 1
-
 		self.image = sprites.subsurface(75*2, 74*2, 3*2, 4*2)
-
-		# position is player's top left corner, so we'll need to
-		# recalculate a bit. also rotate image itself.
 		if direction == self.DIR_UP:
 			self.rect = pygame.Rect(position[0] + 11, position[1] - 8, 6, 8)
 		elif direction == self.DIR_RIGHT:
