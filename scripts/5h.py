@@ -18,6 +18,7 @@ RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 
 
+
 # --- Classes
 
 
@@ -83,7 +84,7 @@ pygame.init()
 screen_width = 700
 screen_height = 400
 screen = pygame.display.set_mode([screen_width, screen_height])
-
+font = pygame.font.SysFont("Times New Roman", 25)
 # --- Sprite lists
 
 # This is a list of every sprite. All blocks and the player block as well.
@@ -102,8 +103,8 @@ for i in range(50):
     block = Block(BLUE)
 
     # Set a random location for the block
-    block.rect.x = random.randrange(screen_width)
-    block.rect.y = random.randrange(350)
+    block.rect.x = random.randrange(30, screen_width)
+    block.rect.y = random.randrange(20, screen_height - 50)
 
     # Add the block to the list of objects
     block_list.add(block)
@@ -157,6 +158,7 @@ while not done:
             score += 1
             print(score)
 
+
         # Remove the bullet if it flies up off the screen
         if bullet.rect.y < -10:
             bullet_list.remove(bullet)
@@ -165,11 +167,12 @@ while not done:
     # --- Draw a frame
 
     # Clear the screen
+
     screen.fill(WHITE)
 
     # Draw all the spites
     all_sprites_list.draw(screen)
-
+    screen.blit(font.render("Score: " + str(score), -1, (0, 0, 0)), (5, 5))
     # Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
 

@@ -2,10 +2,10 @@ import pygame
 from pygame.locals import *
 import sys
 import random
-
 class DoodleJump:
     def __init__(self):
         self.screen = pygame.display.set_mode((800, 600))
+        pygame.display.set_caption('Doodle Jump')
         self.green = pygame.image.load("assets/green.png").convert_alpha()
         pygame.font.init()
         self.score = 0
@@ -56,7 +56,7 @@ class DoodleJump:
         elif self.playerx < -50:
             self.playerx = 850
         self.playerx += self.xmovement
-        if self.playery - self.cameray <= 200:
+        if self.playery - self.cameray <= 100:
             self.cameray -= 10
         if not self.direction:
             if self.jump:
@@ -142,9 +142,9 @@ class DoodleJump:
             on -= 50
 
     def drawGrid(self):
-        for x in range(80):
-            pygame.draw.line(self.screen, (222,222,222), (x * 12, 0), (x * 12, 600))
-            pygame.draw.line(self.screen, (222,222,222), (0, x * 12), (800, x * 12))
+        for x in range(100):
+            pygame.draw.line(self.screen, (222,222,222), (x * 15, 0), (x * 15, 600))
+            pygame.draw.line(self.screen, (222,222,222), (0, x * 15), (800, x * 15))
     
     def run(self):
         clock = pygame.time.Clock()
@@ -153,7 +153,7 @@ class DoodleJump:
             self.screen.fill((255,255,255))
             clock.tick(60)
             for event in pygame.event.get():
-                if event.type == QUIT:
+                if event.type == QUIT or event.type == KEYUP and event.key == K_ESCAPE:
                     sys.exit()
             if self.playery - self.cameray > 700:
                 self.cameray = 0
@@ -167,8 +167,9 @@ class DoodleJump:
             self.drawPlatforms()
             self.updatePlayer()
             self.updatePlatforms()
-            self.screen.blit(self.font.render(str(self.score), -1, (0, 0, 0)), (25, 25))
-            pygame.display.flip() 
+            self.screen.blit(self.font.render("Score: "+ str(self.score), -1, (0, 0, 0)), (25, 25))
+            pygame.display.flip()
 
 
 DoodleJump().run()
+
